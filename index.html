@@ -7,9 +7,17 @@
 </head>
 <body>
     <div> input number to get data from blockchain </div>
-    <input id="inputBox">
+    <input id="getMsgInput">
     <button onclick="getMsg()"> getMsg </button>
-    <div id="displayDiv"></div>
+    <div id="getMsgDiv"></div>
+
+    <br><br><br>
+
+    <div> input message to store onto the blockchain </div>
+    <input id="sendMsgInput">
+    <button onclick="sendMsg()"> sendMsg </button>
+    <div id="hashDiv"></div>
+    <div id="nonceDiv"></div>
 </body>
 </html>
 
@@ -17,16 +25,55 @@
 
     const Web3 = require('web3')
     web3 = new Web3(new Web3.providers.HttpProvider('https://rinkeby.infura.io/2HSUZ74pwuqqG9FGfpCg'))
-    const contractAddress = '0xbdff8e485fcdb8f0ac81a45ad349c44faa5322b4'
-    const abi = [{"constant":true,"inputs":[],"name":"index","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"i","type":"uint256"}],"name":"getMsg","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"myMsg","type":"string"}],"name":"sendMsg","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"}]
-    const bytecode = '6060604052341561000f57600080fd5b5b6103798061001f6000396000f30060606040526000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff1680632986c0e5146100545780632b82735b1461007d5780639e0248201461011a575b600080fd5b341561005f57600080fd5b61006761018b565b6040518082815260200191505060405180910390f35b341561008857600080fd5b61009e6004808035906020019091905050610191565b6040518080602001828103825283818151815260200191508051906020019080838360005b838110156100df5780820151818401525b6020810190506100c3565b50505050905090810190601f16801561010c5780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b341561012557600080fd5b610175600480803590602001908201803590602001908080601f0160208091040260200160405190810160405280939291908181526020018383808284378201915050505050509190505061024d565b6040518082815260200191505060405180910390f35b60005481565b610199610294565b600160008381526020019081526020016000208054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156102405780601f1061021557610100808354040283529160200191610240565b820191906000526020600020905b81548152906001019060200180831161022357829003601f168201915b505050505090505b919050565b6000806000815480929190600101919050555081600160008054815260200190815260200160002090805190602001906102889291906102a8565b5060005490505b919050565b602060405190810160405280600081525090565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106102e957805160ff1916838001178555610317565b82800160010185558215610317579182015b828111156103165782518255916020019190600101906102fb565b5b5090506103249190610328565b5090565b61034a91905b8082111561034657600081600090555060010161032e565b5090565b905600a165627a7a72305820a118ce30cece91eea5a906ce5e258e6c56756a69fb814c376b74f7264c883b5a0029'
-    const myContract = web3.eth.contract(abi).at(contractAddress)
+
 
     function getMsg(){
-        const num = document.getElementById('inputBox').value
-        myContract.getMsg.call(num, (err, result) => {
-            document.getElementById('displayDiv').innerHTML = result
+
+        // user input
+        const getMsgInput = document.getElementById('getMsgInput').value
+
+        const contractAddress = '0xbdff8e485fcdb8f0ac81a45ad349c44faa5322b4'
+        const abi = [{"constant":true,"inputs":[],"name":"index","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"i","type":"uint256"}],"name":"getMsg","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"myMsg","type":"string"}],"name":"sendMsg","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"}]
+        const myContract = web3.eth.contract(abi).at(contractAddress)
+
+        // call to blockchain
+        myContract.getMsg.call(getMsgInput, (err, result) => {
+            document.getElementById('getMsgDiv').innerHTML = result
         })
+
+    }
+
+
+    function sendMsg(){
+
+        // message user wants to send
+        const sendMsgInput = document.getElementById('getMsgInput').value
+
+        // Sign Transaction
+        const privateKey = new Buffer('505bdbc30b8f84d06dbfb4c780a5504c87a2a13731f11c41c0f9b4247b719985', 'hex')
+        const txParams = {
+            nonce: '0x' + web3.eth.getTransactionCount('0x5873E7b7F909B4F76ce4B7B3338DB674F1aC3a02').toString(16),
+            gasPrice: '0x' + Number(600000).toString(16),
+            to: '0xbdfF8E485fCdb8f0Ac81A45ad349c44FAA5322B4',
+            gasLimit: '0x' + Number(600000).toString(16),
+            chainId: 4,
+            data: sendMsgInput
+        }
+        const tx = new EthereumTx(txParams)
+        tx.sign(privateKey)
+        const signedTransaction = '0x' + tx.serialize().toString('hex')
+
+        // send transaction
+        web3.eth.sendRawTransaction(signedTransaction, (err, hash) => {
+            // display hash
+            if (err) {
+                document.getElementById('hashDiv').innerHTML = 'Error: ' + err
+            } else {
+                document.getElementById('hashDiv').innerHTML = 'Hash: ' + hash
+                document.getElementById('nonceDiv').innerHTML = 'Nonce: ' + web3.eth.getTransactionCount('0x5873E7b7F909B4F76ce4B7B3338DB674F1aC3a02')
+            }
+        })
+
     }
 
 </script>

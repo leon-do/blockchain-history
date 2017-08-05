@@ -1,0 +1,26 @@
+{
+  "name": "history-in-blockchain",
+  "version": "1.0.0",
+  "description": "The purpose of this repo is to pay a small amount of Ether to save a message onto the blockchain. This message will live on the blockchain indefinitely. This is how history should be recorded.",
+  "main": "server.js",
+  "dependencies": {
+    "ethereumjs-tx": "^1.3.3",
+    "web3": "^0.19.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leon-do/history-in-blockchain.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leon-do/history-in-blockchain/issues"
+  },
+  "homepage": "https://github.com/leon-do/history-in-blockchain#readme"
+}

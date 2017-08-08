@@ -5,7 +5,7 @@ web3 = new Web3(new Web3.providers.HttpProvider('https://rinkeby.infura.io/2HSUZ
 
 var privateKey = new Buffer('505bdbc30b8f84d06dbfb4c780a5504c87a2a13731f11c41c0f9b4247b719985', 'hex')
 
-var message = 'nodejsss'
+var message = 'send bitch nojes'
 
 var rawTx = {
     nonce: web3.toHex(web3.eth.getTransactionCount('0x5873E7b7F909B4F76ce4B7B3338DB674F1aC3a02')),
@@ -26,6 +26,6 @@ web3.eth.sendRawTransaction('0x' + serializedTx.toString('hex'), function(err, h
   {
       console.log(err)
   } else {
-      console.log(hash); // "0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385"
+      console.log(hash) // "0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385"
   }
 });

@@ -7,13 +7,21 @@ class Link {
         this.data = data
     }
 
+    genesis(){
+        return this.genesis = 'start'
+    }
+
 }
 
-const arr = ['yes', 'eye', 'mde', 'dis', 'grt', 'thn', 'sym' ,'bol', 'mth', 'A++', 'spl', 'ing', 'F--']
+// sample data
+const arr = [4,3,2,1]
 
-let linkedList = 0;
+// the genesis block
+let linkedList = {start: 'start'}
+
+// creating the blockchain
 for (let i = 0; i < arr.length; i++){
     linkedList = new Link(linkedList, arr[i])
 }
 
-console.log(linkedList)
+console.log(JSON.stringify(linkedList))

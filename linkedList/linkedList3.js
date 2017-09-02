@@ -7,14 +7,10 @@ class Link {
         this.data = data
     }
 
-    genesis(){
-        return this.genesis = 'start'
-    }
-
 }
 
 // sample data
-const arr = [4,3,2,1]
+const arr = ['apple', 'bananna', 'car']
 
 // the genesis block
 let linkedList = {start: 'start'}
@@ -24,4 +20,4 @@ for (let i = 0; i < arr.length; i++){
     linkedList = new Link(linkedList, arr[i])
 }
 
-console.log(JSON.stringify(linkedList))
+console.log(JSON.stringify(linkedList, null, 4))
